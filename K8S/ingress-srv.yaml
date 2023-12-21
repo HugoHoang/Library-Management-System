@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations: 
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: acme.com
+      http: 
+        paths:
+          - path: /api/books
+            pathType: Prefix
+            backend:
+              service:
+                name: books-clusterip-srv
+                port:
+                  number: 80
+          - path: /api/loans
+            pathType: Prefix
+            backend:
+              service:
+                name: loans-clusterip-srv
+                port:
+                  number: 80

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loans-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loanservice
+  template: 
+    metadata:
+      labels:
+        app: loanservice
+    spec:
+      containers:
+        - name: loanservice
+          image: hugohoang/loanservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loans-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: loanservice
+  ports:
+  - name: loanservice
+    protocol: TCP
+    port: 80
+    targetPort: 80

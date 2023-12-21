@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: books-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookservice
+  template: 
+    metadata:
+      labels:
+        app: bookservice
+    spec:
+      containers:
+        - name: bookservice
+          image: hugohoang/bookservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: books-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: bookservice
+  ports:
+  - name: bookservice
+    protocol: TCP
+    port: 80
+    targetPort: 80
